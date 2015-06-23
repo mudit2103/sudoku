@@ -21,6 +21,8 @@ void CheckBox(int x, int y);
 void CheckAll();
 void CheckAllSingles();
 bool* ReturnBoxPossibilities(int x, int i, int j);
+bool* ReturnRowPossibilities(int x, int i);
+bool* ReturnColPossibilities(int, int);
 
 class cell
 {
@@ -151,6 +153,142 @@ public:
             }
         }
     }
+    
+    void static f21(int i) //row
+    {
+        bool *GetNumberArray;
+        for(int x=1; x<=9; x++)
+        {
+            GetNumberArray = ReturnRowPossibilities(x, i);
+            
+            if(g(0)||g(1)||g(2))
+                if((g(3)||g(4)||g(5)||g(6)||g(7)||g(8))==false)
+                {
+                    int left_row_num=(i)/3*3;
+                    int left_col_num=0;
+                    
+                    for(int a=left_row_num; a<left_row_num+3; a++)
+                    {
+                        for(int b=left_col_num; b<left_col_num+3; b++)
+                        {
+                            if(a!=i)
+                                sudoku[a][b].possibilities[x-1]=false;
+                        }
+                        
+                    }
+                }
+            
+            if(g(3)||g(4)||g(5))
+                if((g(0)||g(1)||g(2)||g(6)||g(7)||g(8))==false)
+                {
+                    int left_row_num=(i)/3*3;
+                    int left_col_num=3;
+                    
+                    for(int a=left_row_num; a<left_row_num+3; a++)
+                    {
+                        for(int b=left_col_num; b<left_col_num+3; b++)
+                        {
+                            if(a!=i)
+                                sudoku[a][b].possibilities[x-1]=false;
+                        }
+                        
+                    }
+                }
+            
+            if(g(6)||g(7)||g(8))
+                if((g(3)||g(4)||g(5)||g(0)||g(1)||g(2))==false)
+                {
+                    int left_row_num=(i)/3*3;
+                    int left_col_num=6;
+                    
+                    for(int a=left_row_num; a<left_row_num+3; a++)
+                    {
+                        for(int b=left_col_num; b<left_col_num+3; b++)
+                        {
+                            if(a!=i)
+                                sudoku[a][b].possibilities[x-1]=false;
+                        }
+                        
+                    }
+                }
+            
+            
+        }
+
+    }
+    
+    void static f22(int i) //column
+    {
+        bool *GetNumberArray;
+        for(int x=1; x<=9; x++)
+        {
+            GetNumberArray = ReturnColPossibilities(x, i);
+            
+            if(g(0)||g(1)||g(2))
+                if((g(3)||g(4)||g(5)||g(6)||g(7)||g(8))==false)
+                {
+                    int left_col_num=(i)/3*3;
+                    int left_row_num=0;
+                    
+                    for(int a=left_row_num; a<left_row_num+3; a++)
+                    {
+                        for(int b=left_col_num; b<left_col_num+3; b++)
+                        {
+                            if(b!=i)
+                                sudoku[a][b].possibilities[x-1]=false;
+                        }
+                        
+                    }
+                }
+            
+            if(g(3)||g(4)||g(5))
+                if((g(0)||g(1)||g(2)||g(6)||g(7)||g(8))==false)
+                {
+                    int left_col_num=(i)/3*3;
+                    int left_row_num=3;
+                    
+                    for(int a=left_row_num; a<left_row_num+3; a++)
+                    {
+                        for(int b=left_col_num; b<left_col_num+3; b++)
+                        {
+                            if(b!=i)
+                                sudoku[a][b].possibilities[x-1]=false;
+                        }
+                        
+                    }
+                }
+            
+            if(g(6)||g(7)||g(8))
+                if((g(3)||g(4)||g(5)||g(0)||g(1)||g(2))==false)
+                {
+                    int left_col_num=(i)/3*3;
+                    int left_row_num=6;
+                    
+                    for(int a=left_row_num; a<left_row_num+3; a++)
+                    {
+                        for(int b=left_col_num; b<left_col_num+3; b++)
+                        {
+                            if(b!=i)
+                                sudoku[a][b].possibilities[x-1]=false;
+                        }
+                        
+                    }
+                }
+            
+            
+        }
+
+    }
+    
+    void static both2()
+    {
+        for(int i=0; i<9; i++)
+        {
+          //  f21(i);
+            f22(i);
+        }
+       
+    }
 
 };
 
@@ -173,7 +311,7 @@ bool PuzzleCompleted()
 
 void GetPuz()//Reads the sudoku from a file
 {
-    fstream file("hiddensinglecolumn.txt");
+    fstream file("lc1.txt");
     char temp[10];
     int CurRow=0;
     if (!file) {
@@ -458,6 +596,37 @@ bool* ReturnBoxPossibilities(int x, int i, int j)
         
     }
 
+bool* ReturnColPossibilities(int x, int j)
+{
+    bool PossibleNumberArray[9];
+    int counter=0;
+        for(int b=0; b<9; b++)
+        {
+            if (sudoku[b][j].possibilities[x-1]==true)
+                PossibleNumberArray[counter]=true;
+            else
+                PossibleNumberArray[counter]=false;
+            counter++;
+            
+        }
+    return PossibleNumberArray;
+}
+
+bool* ReturnRowPossibilities(int x, int j)
+{
+    bool PossibleNumberArray[9];
+    int counter=0;
+    for(int b=0; b<9; b++)
+    {
+        if (sudoku[j][b].possibilities[x-1]==true)
+            PossibleNumberArray[counter]=true;
+        else
+            PossibleNumberArray[counter]=false;
+        counter++;
+        
+    }
+    return PossibleNumberArray;
+}
 
 int main()
 {
@@ -465,22 +634,24 @@ int main()
     GetPuz();
     CheckAll();
 
+    DrawGrid();
     
     DrawGrid();
-    HiddenSingles();
-    DrawGrid();
-
-    /*for(int i=0; i<1000; i++)
+    for(int i=0; i<1000 && !PuzzleCompleted(); i++)
     {
-        //HiddenSingles();
+        HiddenSingles();
         CheckAll();
         CheckAllSingles();
         CheckAll();
-        DrawGrid();
         lockedcandidate::both();
         CheckAll();
+        lockedcandidate::both2();
+        CheckAll();
+        DrawGrid();
+    
         
-    }*/
+    }
+
     
 
     
