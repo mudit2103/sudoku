@@ -9,6 +9,8 @@
 #include <iostream>
 #include <fstream>
 #define i(a,b,c) sudoku[a-1][b-1].ChangeState(c)
+#define cf(name) for(int i=1; i<=9; i++){name(i);};
+#define cf2(name) for(int i=0; i<9; i+=3) for(int j=0; j<9; j+=3) name(i,j);
 using namespace std;
 
 void DrawGrid();
@@ -291,6 +293,130 @@ public:
     }
 
 };
+
+class naked
+{
+private:
+    
+    void static nakedpaircolumn(int x);
+    void static nakedpairbox(int x, int y);
+    void static nakedtriplerow(int x);
+    void static nakedtriplecolumn(int x);
+    void static nakedtriplebox(int x, int y);
+    void static nakedquadrow(int x);
+    void static nakedquadcolumn(int x);
+    void static nakedquadbox(int x, int y);
+public:
+    
+    void static nakedpairrow(int x);
+    
+    void static all()
+    {
+        
+        cf(nakedpairrow);
+        cf(nakedpaircolumn);
+//        cf(nakedtriplerow);
+//        cf(nakedtriplecolumn);
+//        cf(nakedquadrow);
+//        cf(nakedquadcolumn);
+//        cf2(nakedpairbox);
+//        cf2(nakedtriplebox);
+//        cf2(nakedquadbox);
+    }
+    
+};
+
+
+void naked::nakedpairrow(int RowNumber)
+{
+    for(int Number1=1; Number1<=9; Number1++)
+    {
+        for(int Number2=Number1+1; Number2<=9; Number2++)
+        {
+            
+            int outerflag = 0;
+            int store[2] = {-1,-1};
+            int index = 0;
+            
+            for(int i=0; i<9; i++)
+            {
+                int innerflag = 0;
+                
+                if(sudoku[RowNumber-1][i].possibilities[Number1-1] && sudoku[RowNumber-1][i].possibilities[Number2-1])
+                {
+                    for(int x=1; x<=9; x++)
+                    {
+                        if(sudoku[RowNumber-1][i].possibilities[x-1])
+                            innerflag++;
+                    }
+                    if(innerflag==2)
+                    {
+                        outerflag++;
+                        store[index] = i;
+                        index++;
+                    }
+                }
+            }
+            if(outerflag==2)
+            {
+                for(int i=0; i<9; i++)
+                {
+                    if(i!=store[0] && i!=store[1])
+                    {
+                        sudoku[RowNumber-1][i].possibilities[Number1-1]=false;
+                        sudoku[RowNumber-1][i].possibilities[Number2-1]=false;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void naked::nakedpaircolumn(int ColumnNumber)
+{
+    for(int Number1=1; Number1<=9; Number1++)
+    {
+        for(int Number2=Number1+1; Number2<=9; Number2++)
+        {
+            
+            int outerflag = 0;
+            int store[2] = {-1,-1};
+            int index = 0;
+            
+            for(int i=0; i<9; i++)
+            {
+                int innerflag = 0;
+                
+                if(sudoku[i][ColumnNumber-1].possibilities[Number1-1] && sudoku[i][ColumnNumber-1].possibilities[Number2-1])
+                {
+                    for(int x=1; x<=9; x++)
+                    {
+                        if(sudoku[i][ColumnNumber-1].possibilities[x-1])
+                            innerflag++;
+                    }
+                    if(innerflag==2)
+                    {
+                        outerflag++;
+                        store[index] = i;
+                        index++;
+                    }
+                }
+            }
+            if(outerflag==2)
+            {
+                for(int i=0; i<9; i++)
+                {
+                    if(i!=store[0] && i!=store[1])
+                    {
+                        sudoku[i][ColumnNumber-1].possibilities[Number1-1]=false;
+                        sudoku[i][ColumnNumber-1].possibilities[Number2-1]=false;
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 bool PuzzleCompleted()
 {
@@ -637,22 +763,23 @@ int main()
     DrawGrid();
     
     DrawGrid();
-    for(int i=0; i<1000 && !PuzzleCompleted(); i++)
-    {
-        HiddenSingles();
-        CheckAll();
-        CheckAllSingles();
-        CheckAll();
-        lockedcandidate::both();
-        CheckAll();
-        lockedcandidate::both2();
-        CheckAll();
-        DrawGrid();
-    
-        
-    }
+//    for(int i=0; i<1000 && !PuzzleCompleted(); i++)
+//    {
+//        HiddenSingles();
+//        CheckAll();
+//        CheckAllSingles();
+//        CheckAll();
+//        lockedcandidate::both();
+//        CheckAll();
+//        lockedcandidate::both2();
+//        CheckAll();
+//        DrawGrid();
+//    
+//        
+//    }
 
-    
+    naked::all();
+    DrawGrid();
 
     
     
