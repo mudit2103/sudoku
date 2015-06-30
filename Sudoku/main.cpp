@@ -286,7 +286,7 @@ public:
     {
         for(int i=0; i<9; i++)
         {
-          //  f21(i);
+            f21(i);
             f22(i);
         }
        
@@ -315,17 +315,264 @@ public:
         
         cf(nakedpairrow);
         cf(nakedpaircolumn);
-//        cf(nakedtriplerow);
-//        cf(nakedtriplecolumn);
-//        cf(nakedquadrow);
-//        cf(nakedquadcolumn);
-//        cf2(nakedpairbox);
+        cf2(nakedpairbox);
+        
+        cf(nakedtriplerow);
+        cf(nakedtriplecolumn);
+        cf(nakedquadrow);
+        cf(nakedquadcolumn);
+
 //        cf2(nakedtriplebox);
 //        cf2(nakedquadbox);
     }
     
 };
 
+void naked::nakedquadrow(int RowNumber)
+{
+    for(int Number1=1; Number1<=9; Number1++)
+    {
+        for(int Number2=Number1+1; Number2<=9; Number2++)
+        {
+            for(int Number3=Number2+1; Number3<=9; Number3++)
+            {
+                for(int Number4=Number3+1; Number4<=9; Number4++)
+                {
+                int outerflag = 0;
+                int store[4] = {-1,-1, -1,-1};
+                int index = 0;
+                
+                for(int i=0; i<9; i++)
+                {
+                    int FalseNum = 0;
+                    int TrueNum= 0;
+                    
+                    if(sudoku[RowNumber-1][i].possibilities[Number1-1] || sudoku[RowNumber-1][i].possibilities[Number2-1] || sudoku[RowNumber-1][i].possibilities[Number3-1]||sudoku[RowNumber-1][i].possibilities[Number4-1])
+                    {
+                        if(sudoku[RowNumber-1][i].possibilities[Number1-1])
+                            TrueNum++;
+                        if(sudoku[RowNumber-1][i].possibilities[Number2-1])
+                            TrueNum++;
+                        if(sudoku[RowNumber-1][i].possibilities[Number3-1])
+                            TrueNum++;
+                        if(sudoku[RowNumber-1][i].possibilities[Number4-1])
+                            TrueNum++;
+                        
+                        
+                        for(int x=1; x<=9; x++)
+                        {
+                            if(!(sudoku[RowNumber-1][i].possibilities[x-1]))
+                                FalseNum++;
+                        }
+                        if(FalseNum==(9-TrueNum))
+                        {
+                            outerflag++;
+                            store[index] = i;
+                            index++;
+                        }
+                    }
+                }
+                if(outerflag==4)
+                {
+                    for(int i=0; i<9; i++)
+                    {
+                        if(i!=store[0] && i!=store[1] && i!=store[2] && i!=store[3])
+                        {
+                            sudoku[RowNumber-1][i].possibilities[Number1-1]=false;
+                            sudoku[RowNumber-1][i].possibilities[Number2-1]=false;
+                            sudoku[RowNumber-1][i].possibilities[Number3-1]=false;
+                            sudoku[RowNumber-1][i].possibilities[Number4-1]=false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    }
+}
+
+
+void naked::nakedquadcolumn(int ColumnNumber)
+{
+    for(int Number1=1; Number1<=9; Number1++)
+    {
+        for(int Number2=Number1+1; Number2<=9; Number2++)
+        {
+            for(int Number3=Number2+1; Number3<=9; Number3++)
+            {
+                for(int Number4=Number3+1; Number4<=9; Number4++)
+                {
+                    int outerflag = 0;
+                    int store[4] = {-1,-1, -1,-1};
+                    int index = 0;
+                    
+                    for(int i=0; i<9; i++)
+                    {
+                        int FalseNum = 0;
+                        int TrueNum= 0;
+                        
+                        if(sudoku[i][ColumnNumber-1].possibilities[Number1-1] || sudoku[i][ColumnNumber-1].possibilities[Number2-1] || sudoku[i][ColumnNumber-1].possibilities[Number3-1]||sudoku[i][ColumnNumber-1].possibilities[Number4-1])
+                        {
+                            if(sudoku[i][ColumnNumber-1].possibilities[Number1-1])
+                                TrueNum++;
+                            if(sudoku[i][ColumnNumber-1].possibilities[Number2-1])
+                                TrueNum++;
+                            if(sudoku[i][ColumnNumber-1].possibilities[Number3-1])
+                                TrueNum++;
+                            if(sudoku[i][ColumnNumber-1].possibilities[Number4-1])
+                                TrueNum++;
+                            
+                            
+                            for(int x=1; x<=9; x++)
+                            {
+                                if(!(sudoku[i][ColumnNumber-1].possibilities[x-1]))
+                                    FalseNum++;
+                            }
+                            if(FalseNum==(9-TrueNum))
+                            {
+                                outerflag++;
+                                store[index] = i;
+                                index++;
+                            }
+                        }
+                    }
+                    if(outerflag==4)
+                    {
+                        for(int i=0; i<9; i++)
+                        {
+                            if(i!=store[0] && i!=store[1] && i!=store[2] && i!=store[3])
+                            {
+                                sudoku[i][ColumnNumber-1].possibilities[Number1-1]=false;
+                                sudoku[i][ColumnNumber-1].possibilities[Number2-1]=false;
+                                sudoku[i][ColumnNumber-1].possibilities[Number3-1]=false;
+                                sudoku[i][ColumnNumber-1].possibilities[Number4-1]=false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+void naked::nakedtriplerow(int RowNumber)
+{
+    for(int Number1=1; Number1<=9; Number1++)
+    {
+        for(int Number2=Number1+1; Number2<=9; Number2++)
+        {
+            for(int Number3=Number2+1; Number3<=9; Number3++)
+            {
+                int outerflag = 0;
+                int store[3] = {-1,-1, -1};
+                int index = 0;
+                
+                for(int i=0; i<9; i++)
+                {
+                    int FalseNum = 0;
+                    int TrueNum= 0;
+                    
+                    if(sudoku[RowNumber-1][i].possibilities[Number1-1] || sudoku[RowNumber-1][i].possibilities[Number2-1] || sudoku[RowNumber-1][i].possibilities[Number3-1])
+                    {
+                        if(sudoku[RowNumber-1][i].possibilities[Number1-1])
+                            TrueNum++;
+                        if(sudoku[RowNumber-1][i].possibilities[Number2-1])
+                            TrueNum++;
+                        if(sudoku[RowNumber-1][i].possibilities[Number3-1])
+                            TrueNum++;
+                        
+                        
+                        for(int x=1; x<=9; x++)
+                        {
+                            if(!(sudoku[RowNumber-1][i].possibilities[x-1]))
+                                FalseNum++;
+                        }
+                        if(FalseNum==(9-TrueNum))
+                        {
+                            outerflag++;
+                            store[index] = i;
+                            index++;
+                        }
+                    }
+                }
+                if(outerflag==3)
+                {
+                    for(int i=0; i<9; i++)
+                    {
+                        if(i!=store[0] && i!=store[1] && i!=store[2])
+                        {
+                            sudoku[RowNumber-1][i].possibilities[Number1-1]=false;
+                            sudoku[RowNumber-1][i].possibilities[Number2-1]=false;
+                            sudoku[RowNumber-1][i].possibilities[Number3-1]=false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
+void naked::nakedtriplecolumn(int ColumnNumber)
+{
+    for(int Number1=1; Number1<=9; Number1++)
+    {
+        for(int Number2=Number1+1; Number2<=9; Number2++)
+        {
+            for(int Number3=Number2+1; Number3<=9; Number3++)
+            {
+                int outerflag = 0;
+                int store[3] = {-1,-1, -1};
+                int index = 0;
+                
+                for(int i=0; i<9; i++)
+                {
+                    int FalseNum = 0;
+                    int TrueNum= 0;
+                    
+                    if(sudoku[i][ColumnNumber-1].possibilities[Number1-1] || sudoku[i][ColumnNumber-1].possibilities[Number2-1] || sudoku[i][ColumnNumber-1].possibilities[Number3-1])
+                    {
+                        if(sudoku[i][ColumnNumber-1].possibilities[Number1-1])
+                            TrueNum++;
+                        if(sudoku[i][ColumnNumber-1].possibilities[Number2-1])
+                            TrueNum++;
+                        if(sudoku[i][ColumnNumber-1].possibilities[Number3-1])
+                            TrueNum++;
+                        
+                        
+                        for(int x=1; x<=9; x++)
+                        {
+                            if(!(sudoku[i][ColumnNumber-1].possibilities[x-1]))
+                                FalseNum++;
+                        }
+                        if(FalseNum==(9-TrueNum))
+                        {
+                            outerflag++;
+                            store[index] = i;
+                            index++;
+                        }
+                    }
+                }
+                if(outerflag==3)
+                {
+                    for(int i=0; i<9; i++)
+                    {
+                        if(i!=store[0] && i!=store[1] && i!=store[2])
+                        {
+                            sudoku[i][ColumnNumber-1].possibilities[Number1-1]=false;
+                            sudoku[i][ColumnNumber-1].possibilities[Number2-1]=false;
+                            sudoku[i][ColumnNumber-1].possibilities[Number3-1]=false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
 
 void naked::nakedpairrow(int RowNumber)
 {
@@ -417,6 +664,64 @@ void naked::nakedpaircolumn(int ColumnNumber)
     }
 }
 
+void naked::nakedpairbox(int RowNumber, int ColumnNumber)
+{
+    for(int Number1=1; Number1<=9; Number1++)
+    {
+        for(int Number2=Number1+1; Number2<=9; Number2++)
+        {
+            
+            int outerflag = 0;
+            int store[4] = {-1,-1, -1, -1};
+            int index = 0;
+            
+            for(int i=RowNumber; i<RowNumber+3; i++)
+            {
+                for(int j=ColumnNumber; j<ColumnNumber+3; j++)
+                {
+                    int innerflag = 0;
+                    
+                    if(sudoku[i][j].possibilities[Number1-1] && sudoku[i][j].possibilities[Number2-1])
+                    {
+                        for(int x=1; x<=9; x++)
+                        {
+                            if(sudoku[i][j].possibilities[x-1])
+                                innerflag++;
+                        }
+                        
+                        if(innerflag==2)
+                        {
+                            outerflag++;
+                            store[index] = i;
+                            store[index+1] = j;
+                            index+=2;
+                        }
+                    }
+                }
+            }
+            if(outerflag==2)
+            {
+                int newindex = 0;
+                for(int i=RowNumber; i<RowNumber+3; i++)
+                {
+                    for(int j=ColumnNumber; j<ColumnNumber+3; j++)
+                    {
+                        if(i==store[newindex] && j==store[newindex+1])
+                        {
+                            newindex+=2;
+                        }
+                        else
+                        {
+                            sudoku[i][j].possibilities[Number1-1]=false;
+                            sudoku[i][j].possibilities[Number2-1]=false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+}
 
 bool PuzzleCompleted()
 {
@@ -774,12 +1079,15 @@ int main()
 //        lockedcandidate::both2();
 //        CheckAll();
 //        DrawGrid();
-//    
+//            naked::all();
+//            DrawGrid();
+//
 //        
 //    }
 
     naked::all();
     DrawGrid();
+   
 
     
     
