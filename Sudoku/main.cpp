@@ -374,6 +374,7 @@ void naked::nakedquadrow(int RowNumber)
                 }
                 if(outerflag==4)
                 {
+                    cout<<"\nnaked quad row found at"<<RowNumber;
                     for(int i=0; i<9; i++)
                     {
                         if(i!=store[0] && i!=store[1] && i!=store[2] && i!=store[3])
@@ -438,6 +439,7 @@ void naked::nakedquadcolumn(int ColumnNumber)
                     }
                     if(outerflag==4)
                     {
+                        cout<<"\nnaked quad column found at"<<ColumnNumber;
                         for(int i=0; i<9; i++)
                         {
                             if(i!=store[0] && i!=store[1] && i!=store[2] && i!=store[3])
@@ -500,6 +502,7 @@ void naked::nakedtriplerow(int RowNumber)
                 }
                 if(outerflag==3)
                 {
+                    cout<<"\nnaked triple row found at"<<RowNumber;
                     for(int i=0; i<9; i++)
                     {
                         if(i!=store[0] && i!=store[1] && i!=store[2])
@@ -558,6 +561,8 @@ void naked::nakedtriplecolumn(int ColumnNumber)
                 }
                 if(outerflag==3)
                 {
+                    cout<<"\nnaked triple column found at"<<ColumnNumber;
+                    
                     for(int i=0; i<9; i++)
                     {
                         if(i!=store[0] && i!=store[1] && i!=store[2])
@@ -606,6 +611,7 @@ void naked::nakedpairrow(int RowNumber)
             }
             if(outerflag==2)
             {
+                cout<<"\nnaked pair row found at"<<RowNumber;
                 for(int i=0; i<9; i++)
                 {
                     if(i!=store[0] && i!=store[1])
@@ -651,6 +657,7 @@ void naked::nakedpaircolumn(int ColumnNumber)
             }
             if(outerflag==2)
             {
+                cout<<"\nnaked pair column found at"<<ColumnNumber;
                 for(int i=0; i<9; i++)
                 {
                     if(i!=store[0] && i!=store[1])
@@ -701,6 +708,7 @@ void naked::nakedpairbox(int RowNumber, int ColumnNumber)
             }
             if(outerflag==2)
             {
+                cout<<"\nnaked pair box found at box indexes"<<RowNumber<<" "<<ColumnNumber;
                 int newindex = 0;
                 for(int i=RowNumber; i<RowNumber+3; i++)
                 {
@@ -786,6 +794,7 @@ void ColumnHiddenSingles(int i)
         }
         if (flag==1)
         {
+            cout<<"\ncolumn hidden single found in column"<<i;
             sudoku[no][i].ChangeState(j);
             CheckAll();
         }
@@ -813,6 +822,7 @@ void RowHiddenSingles(int i)
 
         if (flag==1)
         {
+            cout<<"\nrow hidden single found in row"<<i;
             sudoku[i][no].ChangeState(j);
             CheckAll();
         }
@@ -841,6 +851,7 @@ void BoxHiddenSingles(int x, int y)
             }
         }
         if (flag==1) {
+            cout<<"\nbox hidden single found in box indexes"<<x<<" "<<y;
             //cout << ".." << h << ".. " << k << " >> " << "Single\n\n";
             sudoku[l][h].ChangeState(k);
             CheckAll();
@@ -850,7 +861,7 @@ void BoxHiddenSingles(int x, int y)
     }
 }
 
-void HiddenSingles()
+void AllHiddenSingles()
 {
     for (int i=0; i<9; i++)
     {
@@ -999,6 +1010,7 @@ void CheckAllSingles() //checks for any singles and marks them off!
             }
             if(flag==0)             //if it is a single, change the state and check the row, column and boxes off.
             {
+                cout<<"\nsingle found at position"<<i<<" "<<j;
                 sudoku[i][j].ChangeState(store+1);
                 
             }
@@ -1068,25 +1080,28 @@ int main()
     DrawGrid();
     
     DrawGrid();
-//    for(int i=0; i<1000 && !PuzzleCompleted(); i++)
-//    {
-//        HiddenSingles();
-//        CheckAll();
-//        CheckAllSingles();
-//        CheckAll();
-//        lockedcandidate::both();
-//        CheckAll();
-//        lockedcandidate::both2();
-//        CheckAll();
-//        DrawGrid();
-//            naked::all();
-//            DrawGrid();
-//
-//        
-//    }
+    for(int i=0; i<1000 && !PuzzleCompleted(); i++)
+    {
+        AllHiddenSingles();
+        CheckAll();
+        DrawGrid();
+        CheckAllSingles();
+        CheckAll();
+        DrawGrid();
+        lockedcandidate::both();
+        CheckAll();
+        DrawGrid();
+        lockedcandidate::both2();
+        CheckAll();
+        DrawGrid();
+            naked::all();
+            DrawGrid();
 
-    naked::all();
-    DrawGrid();
+        
+    }
+
+   // naked::all();
+    //DrawGrid();
    
 
     
